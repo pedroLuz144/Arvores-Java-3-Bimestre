@@ -20,5 +20,27 @@ public class Arvore {
         public void exibirNumeroDeNos() {
         int totalDeNos = contarNos(raiz);
         System.out.println("Essa arvore tem " + totalDeNos + " nós."); 
-    }
+        }
+
+        //método para percorrer os nós da árvore em pré-ordem.
+        public void preOrder(No raiz) {
+                if (raiz != null) {
+                        System.out.print(raiz.valor + ", ");
+                        preOrder(raiz.filhoEsquerdo);
+                        preOrder(raiz.filhoDireito);
+                }
+        }
+        // public void preOrder(No arvore) {
+        //         if (arvore == null) {
+        //                 System.out.println("Nó vazio"); 
+        //         } else {
+        //                 System.out.println(arvore);
+        //         }
+                
+        //         if (arvore.raiz.filhoEsquerdo == null) {
+        //                 System.out.println("Sem filho esquerdo... Filho direito da raiz = " + raiz + " = " + raiz.filhoEsquerdo);
+        //         } else {
+        //                 System.out.println("Filho esquerdo da raiz = " + raiz + " = " + raiz.filhoEsquerdo);
+        //         }
+        // }
 }
