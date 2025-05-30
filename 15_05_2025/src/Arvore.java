@@ -84,6 +84,17 @@ public class Arvore {
                 return folhas;
         }
 
+        //Código Professor
+        public int contarFolhasRecursivo (No raiz) {
+                if (raiz == null) {
+                        return 0;
+                }
+                if (raiz.filhoEsquerdo == null && raiz.filhoDireito == null) {
+                        return 1;
+                }
+                return contarFolhasRecursivo(raiz.filhoEsquerdo) + contarFolhasRecursivo(raiz.filhoDireito);
+        }
+
         public void exibirNumeroDeNos() {
                 int totalDeNos = contarNos(raiz);
                 System.out.println("Essa arvore tem " + totalDeNos + " nós.");
