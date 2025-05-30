@@ -45,7 +45,7 @@ public class Arvore {
                         if(atual.filhoEsquerdo != null) pilha.push(atual.filhoEsquerdo);
                 }
 
-                return contador;
+                return contador; 
         }
 
         public int contarNosComFila (No raiz) {
@@ -65,6 +65,23 @@ public class Arvore {
                 }
 
                 return contador;
+        }
+
+        //Código Professor
+        public int contarFolhas (No raiz) {
+                if (raiz == null) return 0;
+                Queue<No> fila = new LinkedList<>();
+                fila.add(raiz);
+                int folhas = 0;
+                while (!fila.isEmpty()) {
+                        No atual = fila.poll();
+                        if (atual.filhoEsquerdo == null && atual.filhoDireito == null) {
+                                folhas++;
+                        }
+                        if (atual.filhoEsquerdo != null) fila.add(atual.filhoEsquerdo);
+                        if (atual.filhoDireito != null) fila.add(atual.filhoDireito);
+                }
+                return folhas;
         }
 
         public void exibirNumeroDeNos() {
