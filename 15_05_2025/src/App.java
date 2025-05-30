@@ -6,7 +6,7 @@ public class App {
         arvore.raiz.filhoEsquerdo = new No("B");
         arvore.raiz.filhoEsquerdo.filhoEsquerdo = new No("D");
         arvore.raiz.filhoEsquerdo.filhoDireito = new No("E");
-        arvore.raiz.filhoEsquerdo.filhoDireito.filhoEsquerdo = new No("H");
+        arvore.raiz.filhoEsquerdo.filhoEsquerdo.filhoEsquerdo = new No("H");
 
         arvore.raiz.filhoDireito = new No("C");
         arvore.raiz.filhoDireito.filhoEsquerdo = new No("F");
