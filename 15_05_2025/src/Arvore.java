@@ -3,171 +3,222 @@ import java.util.Queue;
 import java.util.Stack;
 
 public class Arvore {
-        No raiz;
+    private No raiz = null;
 
-        public Arvore() {
+    public int getQuantidadeNos(No no) {
+        if (no == null) return 0;
+        return 1 + getQuantidadeNos(no.getNoEsquerda()) + getQuantidadeNos(no.getNoDireita());
+    }
+
+    public int getQuantidadeNosPilha() {
+        if(raiz == null) return 0;
+
+        Stack<No> pilha = new Stack<>();
+        int i = 0;
+        pilha.add(raiz);
+
+        while(!pilha.isEmpty()) {
+            No atual = pilha.pop();
+            i += 1;
+            if(atual.getNoEsquerda() != null) pilha.add(atual.getNoEsquerda());
+            if(atual.getNoDireita() != null) pilha.add(atual.getNoDireita());
         }
 
-        public Arvore(No raiz) {
-                this.raiz = raiz;
+        return i;
+    }
+
+    public int getQuantidadeNosFila() {
+        if(raiz == null) return 0;
+
+        Queue<No> fila = new LinkedList<>();
+        int i = 0;
+        fila.add(raiz);
+
+        while(!fila.isEmpty()) {
+            No atual = fila.poll();
+            i += 1;
+            if(atual.getNoEsquerda() != null) fila.add(atual.getNoEsquerda());
+            if(atual.getNoDireita() != null) fila.add(atual.getNoDireita());
         }
 
-        public No getRaiz() {
-                return raiz;
+        return i;
+    }
+
+    public int getQuantidadeFolhas(No no) {
+        if (no == null) return 0;
+        if (no.getNoEsquerda() == null && no.getNoDireita() == null) {
+            return 1;
+        } else {
+            return getQuantidadeFolhas(no.getNoEsquerda()) + getQuantidadeFolhas(no.getNoDireita());
+        }
+    }
+
+    public int getQuantidadeFolhasNaoRecursiva() {
+        if(raiz == null) return 0;
+
+        Queue<No> fila = new LinkedList<>();
+        int i = 0;
+        fila.add(raiz);
+
+        while(!fila.isEmpty()) {
+            No atual = fila.poll();
+            if(atual.getNoEsquerda() == null && atual.getNoDireita() == null) {
+                i += 1;
+            } else {
+                if(atual.getNoEsquerda() != null) fila.add(atual.getNoEsquerda());
+                if(atual.getNoDireita() != null) fila.add(atual.getNoDireita());
+            }
         }
 
-        public void setRaiz(No raiz) {
-                this.raiz = raiz;
+        return i;
+    }
+
+    public void preOrdem(No no) {
+        if (no != null) {
+            System.out.print(no.getValor() + " ");
+            preOrdem(no.getNoEsquerda());
+            preOrdem(no.getNoDireita());
+        }
+    }
+
+    public void preOrdemNaoRecursiva() {
+        if(raiz == null) return;
+
+        Stack<No> pilha = new Stack<>();
+        pilha.push(raiz);
+
+        while(!pilha.isEmpty()) {
+            No atual = pilha.pop();
+            System.out.print(atual.getValor() + " ");
+            if(atual.getNoDireita() != null) pilha.add(atual.getNoDireita());
+            if(atual.getNoEsquerda() != null) pilha.add(atual.getNoEsquerda());
+        }
+    }
+
+    public void emOrdem(No no) {
+        if (no != null) {
+            emOrdem(no.getNoEsquerda());
+            System.out.print(no.getValor() + " ");
+            emOrdem(no.getNoDireita());
+        }
+    }
+
+    public void emOrdemNaoRecursiva() {
+        if(raiz == null) return;
+
+        Stack<No> pilha = new Stack<>();
+        No atual = raiz;
+
+        while(atual != null || !pilha.isEmpty()) {
+            while(atual != null) {
+                pilha.push(atual);
+                atual = atual.getNoEsquerda();
+            }
+
+            atual = pilha.pop();
+            System.out.print(atual.getValor() + " ");
+            atual = atual.getNoDireita();
+        }
+    }
+
+    public void posOrdem(No no) {
+        if (no != null) {
+            posOrdem(no.getNoEsquerda());
+            posOrdem(no.getNoDireita());
+            System.out.print(no.getValor() + " ");
+        }
+    }
+
+    public void posOrdemNaoRecursiva() {
+        if(raiz == null) return;
+
+        Stack<No> pilha = new Stack<>();
+        Stack<No> espera = new Stack<>();
+        pilha.push(raiz);
+
+        while(!pilha.isEmpty()) {
+            No atual = pilha.pop();
+            espera.push(atual);
+
+            if(atual.getNoEsquerda() != null) pilha.push(atual.getNoEsquerda());
+            if(atual.getNoDireita() != null) pilha.push(atual.getNoDireita());
         }
 
-        public int contarNos(No raiz) {
-                if (raiz == null) {
-                        return 0;
-                } else {
-                        return 1 + contarNos(raiz.filhoDireito) + contarNos(raiz.filhoEsquerdo);
-                }
+        while(!espera.isEmpty()) {
+            No atual = espera.pop();
+            System.out.print(atual.getValor() + " ");
         }
+    }
 
-        // Código do professor
-        public int contarNosComPilha (No raiz) {
-                if (raiz == null) return 0;
+    public void emNivel() {
+        if(raiz == null) return;
 
-                Stack<No> pilha = new Stack<>();
-                pilha.push(raiz);
+        Queue<No> fila = new LinkedList<>();
+        fila.add(raiz);
 
-                int contador = 0;
-
-                while (!pilha.isEmpty()) {
-                        No atual = pilha.pop();
-                        contador++;
-
-                        if(atual.filhoDireito != null) pilha.push(atual.filhoDireito);
-                        if(atual.filhoEsquerdo != null) pilha.push(atual.filhoEsquerdo);
-                }
-
-                return contador; 
+        while(!fila.isEmpty()) {
+            No atual = fila.poll();
+            System.out.print(atual.getValor() + " ");
+            if(atual.getNoEsquerda() != null) fila.add(atual.getNoEsquerda());
+            if(atual.getNoDireita() != null) fila.add(atual.getNoDireita());
         }
+    }
 
-        public int contarNosComFila (No raiz) {
-                if (raiz == null) return 0;
+    private int altura(No no) {
+        return no == null ? 0 : no.getAltura();
+    }
 
-                Queue<No> fila = new LinkedList<>();
-                fila.add(raiz);
+    private int fatorBalanceamento(No no) {
+        return no == null ? 0 : altura(no.getNoEsquerda()) - altura(no.getNoDireita());
+    }
 
-                int contador = 0;
-
-                while (!fila.isEmpty()) {
-                        No atual = fila.poll();
-                        contador++;
-
-                        if(atual.filhoDireito != null) fila.add(atual.filhoDireito);
-                        if(atual.filhoEsquerdo != null) fila.add(atual.filhoEsquerdo);
-                }
-
-                return contador;
+    private void atualizarAltura(No no) {
+        if (no != null) {
+            no.setAltura(1 + Math.max(altura(no.getNoEsquerda()), altura(no.getNoDireita())));
         }
+    }
 
-        //Código Professor
-        public int contarFolhas (No raiz) {
-                if (raiz == null) return 0;
-                Queue<No> fila = new LinkedList<>();
-                fila.add(raiz);
-                int folhas = 0;
-                while (!fila.isEmpty()) {
-                        No atual = fila.poll();
-                        if (atual.filhoEsquerdo == null && atual.filhoDireito == null) {
-                                folhas++;
-                        }
-                        if (atual.filhoEsquerdo != null) fila.add(atual.filhoEsquerdo);
-                        if (atual.filhoDireito != null) fila.add(atual.filhoDireito);
-                }
-                return folhas;
-        }
+    private No rotacaoLL(No y) {
+        No x = y.getNoEsquerda();
+        No T2 = x.getNoDireita();
 
-        //Código Professor
-        public int contarFolhasRecursivo (No raiz) {
-                if (raiz == null) {
-                        return 0;
-                }
-                if (raiz.filhoEsquerdo == null && raiz.filhoDireito == null) {
-                        return 1;
-                }
-                return contarFolhasRecursivo(raiz.filhoEsquerdo) + contarFolhasRecursivo(raiz.filhoDireito);
-        }
+        x.setNoDireita(y);
+        y.setNoEsquerda(T2);
 
-        public void exibirNumeroDeNos() {
-                int totalDeNos = contarNos(raiz);
-                System.out.println("Essa arvore tem " + totalDeNos + " nós.");
-        }
+        atualizarAltura(y);
+        atualizarAltura(x);
 
-        // método para percorrer os nós da árvore em pré-ordem.
-        public void preOrder(No raiz) {
-                if (raiz != null) {
-                        System.out.print(raiz.valor + ", ");
-                        preOrder(raiz.filhoEsquerdo);
-                        preOrder(raiz.filhoDireito);
-                }
-        }
-        // public void preOrder(No arvore) {
-        // if (arvore == null) {
-        // System.out.println("Nó vazio");
-        // } else {
-        // System.out.println(arvore);
-        // }
+        return x;
+    }
 
-        // if (arvore.raiz.filhoEsquerdo == null) {
-        // System.out.println("Sem filho esquerdo... Filho direito da raiz = " + raiz +
-        // " = " + raiz.filhoEsquerdo);
-        // } else {
-        // System.out.println("Filho esquerdo da raiz = " + raiz + " = " +
-        // raiz.filhoEsquerdo);
-        // }
-        // }
+    private No rotacaoRR(No x) {
+        No y = x.getNoDireita();
+        No T2 = y.getNoEsquerda();
 
-        public void emOrder(No raiz) {
-                if (raiz != null) {
-                        emOrder(raiz.filhoEsquerdo);
-                        System.out.print(raiz.valor + ", ");
-                        emOrder(raiz.filhoDireito);
-                }
-        }
+        y.setNoEsquerda(x);
+        x.setNoDireita(T2);
 
-        public void posOrder(No raiz) {
-                if (raiz != null) {
-                        posOrder(raiz.filhoEsquerdo);
-                        posOrder(raiz.filhoDireito);
-                        System.out.print(raiz.valor + ", ");
-                }
-        }
+        atualizarAltura(x);
+        atualizarAltura(y);
 
-        public void emNivel(No raiz) {
-                int lado = 1;
-                No raiz2, raiz3;
-                System.out.print(raiz.valor + ", ");
-                do {
-                        if (raiz != null) {
-                                if (lado == 1) {
-                                        System.out.print(raiz.filhoEsquerdo.valor + ", ");
-                                        System.out.print(raiz.filhoDireito.valor + ", ");
-                                        raiz2 = raiz.filhoEsquerdo;
-                                        lado = 2;
-                                        if (lado == 2) {
-                                                System.out.print(raiz2.filhoEsquerdo.valor + ", ");
-                                                System.out.print(raiz2.filhoDireito.valor + ", ");
-                                                raiz3 = raiz.filhoDireito;
-                                                lado = 3;
-                                                if (lado == 3) {
-                                                        System.out.print(raiz3.filhoEsquerdo.valor + ", ");
-                                                        System.out.print(raiz3.filhoDireito.valor + ", ");
-                                                        raiz = raiz2.filhoEsquerdo;
-                                                        lado = 1;
-                                                }
-                                        }
-                                }
-                        } else {
-                                lado = 0;
-                        }
+        return y;
+    }
 
-                } while (lado != 0);
-        }
+    private No rotacaoLR(No z) {
+        z.setNoEsquerda(rotacaoRR(z.getNoEsquerda()));
+        return rotacaoLL(z);
+    }
+
+    private No rotacaoRL(No z) {
+        z.setNoDireita(rotacaoLL(z.getNoDireita()));
+        return rotacaoRR(z);
+    }
+
+    public No getRaiz() {
+        return raiz;
+    }
+
+    public void setRaiz(No raiz) {
+        this.raiz = raiz;
+    }
 }
